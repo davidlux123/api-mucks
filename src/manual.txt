@@ -1,0 +1,75 @@
+Manual de comandos de las instalaciones de paquetes
+
+npm i --save @nestjs/swagger swagger-ui-express
+
+mkdir -p src/common/errors src/common/middleware
+
+nest generate module configure-mock
+nest generate controller configure-mock
+nest generate service configure-mock
+
+mkdir -p src/mock-endpoints/dto src/mock-endpoints/entities
+
+npm install class-validator class-transformer  //cerrar y vovler abrir para reconocer los types
+
+{
+  "path": "/api/v1/users",
+  "method": "GET",
+  "statusCode": 200,
+  "response": { "data": "mock response" }
+}
+
+{
+  "path": "/api/v1/reportes",
+  "method": "GET",
+  "headers": {
+    "Authorization": "Bearer xyz123",
+    "Content-Type": "application/json"
+  },
+  "statusCode": 200,
+  "response": {
+    "data": {
+      "reporte": "ventas_diarias",
+      "total": 1500,
+      "moneda": "USD"
+    }
+  }
+}
+
+{
+  "path": "/api/v1/reportes",
+  "method": "GET",
+  "queryParams": {
+    "fechaInicial": "2021-01-29 13:01:00",
+    "fechaFinal": "2021-01-29 13:06:00"
+  },
+  "headers": {
+    "Authorization": "Bearer xyz123",
+    "Content-Type": "application/json"
+  },
+  "statusCode": 200,
+  "response": {
+    "data": {
+      "reporte": "ventas_totales",
+      "total": 1500,
+      "moneda": "USD"
+    }
+  }
+}
+
+{
+  "path": "/api/v1/analitica",
+  "method": "GET",
+  "queryParams": {
+    "fechaInicial": "2021-01-29 13:01:00",
+    "fechaFinal": "2021-01-29 13:06:00"
+  },
+  "statusCode": 200,
+  "response": {
+    "data": {
+      "reporte": "ventas_diarias",
+      "total": 1500,
+      "moneda": "USD"
+    }
+  }
+}

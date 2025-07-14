@@ -1,0 +1,17 @@
+### endopint 1
+GET http://localhost:3000/api/v1/users
+
+
+### endopint 2
+GET http://localhost:3000/api/v1/reportes
+Content-Type: application/json
+Authorization: Bearer xyz123 
+
+
+### endopint 3
+GET http://localhost:3000/api/v1/reportes?fechaInicial=2021-01-29%2013:01:00&fechaFinal=2021-01-29%2013:06:00
+Authorization: Bearer xyz123
+Content-Type: application/json
+
+### endopint 4
+GET http://localhost:3000/api/v1/analitica?fechaInicial=2021-01-29%2013:01:00&fechaFinal=2021-01-29%2013:06:00
