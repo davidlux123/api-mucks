@@ -18,7 +18,7 @@ export class ConfigureMockController {
   constructor(private readonly mockEndpointsService: ConfigureMockService) {}
 
   @Get('ping')
-  getHello(@Req() req: Request, @Res() res: Response) {
+  getHealthy(@Req() req: Request, @Res() res: Response) {
     res.status(200).json({ msg: 'Controller configure-mock Healthy' });
   }
 

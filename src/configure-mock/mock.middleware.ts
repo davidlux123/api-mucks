@@ -26,6 +26,7 @@ export class MockMiddleware implements NestMiddleware {
       query,
       headers,
       body,
+      'buscar',
     );
 
     if (!matchingConfig) {

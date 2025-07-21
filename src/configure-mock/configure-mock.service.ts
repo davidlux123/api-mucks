@@ -37,16 +37,15 @@ export class ConfigureMockService {
     queryParams: Record<string, any>,
     headers: Record<string, any>,
     body: any,
-    action?: string,
+    action: string,
   ): ConfigureMockDto | undefined {
     return this.mockConfigs.find((config) => {
       // Verificar método y path
       let methodnpath = true;
-      const whitoutHP =
-        Object.keys(headers).length === 0 &&
-        Object.keys(queryParams).length === 0;
+      // eslint-disable-next-line prettier/prettier
+      const whitoutHP = Object.keys(headers).length === 0 && Object.keys(queryParams).length === 0;
 
-      if (whitoutHP || !action || (action && action !== 'insertar')) {
+      if (whitoutHP || action !== 'insertar') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
         if (config.method !== method || config.path !== path) {
           methodnpath = false;
@@ -54,32 +53,15 @@ export class ConfigureMockService {
       }
 
       // Verificar headers
-      let headersMatch = true;
-      if (config.headers) {
-        for (const [key, value] of Object.entries(config.headers)) {
-          if (
-            headers[key.toLocaleLowerCase()] !== value &&
-            headers[key] !== value
-          )
-            headersMatch = false;
-        }
-      } else if (
-        Object.keys(headers).length > 0 &&
-        action &&
-        action === 'insertar'
-      ) {
-        headersMatch = false;
-      }
+      const currentHeaders = config.headers ?? {};
+      // eslint-disable-next-line prettier/prettier
+      const headersMatch = this.validateCurrrent_IncommingMocks('headers', headers, currentHeaders);
 
       // Verificar query params
-      let queryParamsMatch = true;
-      if (config.queryParams) {
-        for (const [key, value] of Object.entries(config.queryParams)) {
-          if (queryParams[key] !== value) queryParamsMatch = false;
-        }
-      } else if (Object.keys(queryParams).length > 0) {
-        queryParamsMatch = false;
-      }
+      const currentParams = config.queryParams ?? {};
+      // eslint-disable-next-line prettier/prettier
+      const ParamsMatch = this.validateCurrrent_IncommingMocks('queryParams', queryParams, currentParams);
+
       // // Verificar body
       // if (config.body) {
       //   const configBody = JSON.stringify(config.body);
@@ -87,7 +69,30 @@ export class ConfigureMockService {
       //   if (configBody !== requestBody) return false;
       // }
 
-      return methodnpath && headersMatch && queryParamsMatch;
+      return methodnpath && headersMatch && ParamsMatch;
     });
+  }
+
+  private validateCurrrent_IncommingMocks(
+    action: string,
+    incoming: Record<string, any>,
+    current: Record<string, string>,
+  ): boolean {
+    const currentLength = Object.keys(current).length;
+    const incomingLength = Object.keys(incoming).length;
+
+    if (currentLength > 0 && incomingLength > 0) {
+      for (const [key, value] of Object.entries(current)) {
+        if (
+          incoming[key.toLocaleLowerCase()] !== value &&
+          incoming[key] !== value
+        )
+          return false;
+      }
+    } else if (currentLength !== incomingLength && action !== 'headesrs') {
+      return false;
+    }
+
+    return true;
   }
 }
